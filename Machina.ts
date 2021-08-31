@@ -1,0 +1,7 @@
+class Machina {
+    
+
+    constructor() {
+        
+    }
+}
