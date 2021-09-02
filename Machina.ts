@@ -20,12 +20,12 @@ export class Machina {
      * @param client_id ID of the bot
      * @param guild_id The SINGLE guild you want your commands to go under
      */
-    constructor(TOKEN: string, client_id: string, guild_id: string) {
+    constructor(TOKEN: string, client_id: string, guild_id: string, ...extraIntenets: number[]) {
         this.token = TOKEN;
         this.client_id = client_id
         this.guild_id = guild_id
         this.rest = new REST({version: '9'}).setToken(this.token)
-        this.client = new Client({ intents: [Intents.FLAGS.GUILDS] })
+        this.client = new Client({intents: [Intents.FLAGS.GUILDS, ...extraIntenets]})
     }
 
     /** Starts the bot */
