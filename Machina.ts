@@ -5,6 +5,8 @@ import { Client, Collection, CommandInteraction, Intents, Interaction } from 'di
 import * as fs from 'fs'
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { sleep } from './util'
+
+/** Main class that handles command updates and starting the bot */
 export class Machina {
     token: string
     rest: REST
@@ -26,6 +28,7 @@ export class Machina {
         this.client = new Client({ intents: [Intents.FLAGS.GUILDS] })
     }
 
+    /** Starts the bot */
     start() {
         this.client.once('ready', () => {
             console.log('Ready!')
@@ -47,6 +50,8 @@ export class Machina {
 
         this.client.login(this.token)
     }
+
+    /** Takes all the files in commands folder, and uploades them to discord (except those with inDev == true)  */
 
     async updateCommands() {
         this.client.commands = new Collection();
@@ -72,7 +77,10 @@ export class Machina {
     }
 }
 export interface Machi {
-    data: SlashCommandBuilder,
+    /** This is for adding in the command information */
+    data: Partial<SlashCommandBuilder>,
+    /** The function that should be called when activated */
     execute(interaction: CommandInteraction): Promise<void>,
+    /** If the command should be sent to discord */
     inDev: boolean
 }
