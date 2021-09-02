@@ -31,7 +31,7 @@ export class Machina {
     /** Starts the bot */
     start() {
         this.client.once('ready', () => {
-            console.log('Ready!')
+            console.log('Bot Online!')
         })
         this.client.on('interactionCreate', async interaction => {
             if (!interaction.isCommand()) return
@@ -55,8 +55,7 @@ export class Machina {
 
     async updateCommands() {
         this.client.commands = new Collection();
-        for (const file of fs.readdirSync('./commands').filter(file => [console.log(file), file.endsWith('.js')][1] || file.endsWith('.ts'))) {
-            console.log(file)
+        for (const file of fs.readdirSync('./commands').filter(file => file.endsWith('.js') || file.endsWith('.ts'))) {
             let _command = require(`./commands/${file}`)
             const name = Object.getOwnPropertyNames(_command)[1]
             let command: Machi = _command[name]
@@ -71,9 +70,13 @@ export class Machina {
         if([...this.client.commands.values()].length < 1)
             return 
 
-        console.log(`Updating list of commands in five seconds, which is: \n ${this.client.commands.map((v, k) => k + '\n')}`)
-        await sleep(5000)
+        console.log(`=======\nUpdating list of commands in five seconds`)
+        for await (let k of (new Array(5)).fill(0).map((v, i) => 5 - i))
+            await [console.log(`In ${k}...`), sleep(1000)][1]
+
         await this.rest.put(Routes.applicationGuildCommands(this.client_id, this.guild_id), { body: this.client.commands.mapValues((v) => v.data.toJSON()) })
+            .then(() => console.log("Successfully Updated!"))
+            .catch(e => console.error("Looks like there was an error!", e))
     }
 }
 export interface Machi {
