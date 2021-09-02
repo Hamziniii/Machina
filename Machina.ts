@@ -24,7 +24,6 @@ export class Machina {
         this.guild_id = guild_id
         this.rest = new REST({version: '9'}).setToken(this.token)
         this.client = new Client({ intents: [Intents.FLAGS.GUILDS] })
-        console.log("he")
     }
 
     start() {
@@ -50,7 +49,6 @@ export class Machina {
     }
 
     async updateCommands() {
-        console.log("hello")
         this.client.commands = new Collection();
         for (const file of fs.readdirSync('./commands').filter(file => [console.log(file), file.endsWith('.js')][1] || file.endsWith('.ts'))) {
             console.log(file)
